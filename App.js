@@ -1,21 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import { useAssets } from 'expo-asset';
+import Global from './utils/global';
+import Splash from './screens/splash';
+import AppWrapper from './screens/wrapper';
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    AvenirHeavy: Global.FONT.AVENIR_HEAVY,
+    AvenirBlack: Global.FONT.AVENIR_BLACK,
+    AvenirBook: Global.FONT.AVENIR_BOOK,
+  });
+
+  const [imagesLoaded] = useAssets([
+    Global.IMAGE.SPLASH,
+    Global.IMAGE.GUIDE1,
+    Global.IMAGE.GUIDE2,
+    Global.IMAGE.GUIDE3,
+    Global.IMAGE.LOCATION,
+    Global.IMAGE.NOTIFY,
+    Global.IMAGE.DOWN,
+    Global.IMAGE.UNKNOWN,
+    Global.IMAGE.LEFT,
+    Global.IMAGE.RIGHT,
+  ]);
+
+  if(!fontsLoaded || !imagesLoaded)
+    return (<Splash/>);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AppWrapper/>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
