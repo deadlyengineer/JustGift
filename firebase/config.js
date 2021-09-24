@@ -4,14 +4,14 @@ import 'firebase/firestore';
 import 'firebase/storage';
 
 const firebaseConfig = {
-    apiKey: '',
-    authDomain: '',
-    databaseURL: '',
+    apiKey: 'AIzaSyCOb1bwU-Au_HD_d57wZYv09RbEs4kNJZg',
+    authDomain: 'justgift-2e112.firebaseapp.com',
+    databaseURL: 'https://justgift-2e112.firebaseio.com',
     projectId: 'justgift-2e112',
-    storageBucket: '',
-    messagingSenderId: '',
-    appId: '',
-    measurementId: '',
+    storageBucket: 'justgift-2e112.appspot.com',
+    messagingSenderId: '1071101303373',
+    appId: '1:1071101303373:ios:e8ada18d9d3c69ecc29a04',
+    measurementId: '287397094',
 };
 
 if(!firebase.apps.length) {
