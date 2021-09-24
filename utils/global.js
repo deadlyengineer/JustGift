@@ -78,5 +78,6 @@ export default {
         LOADING: require('../assets/loading.json'),
         SWIPE_LEFT: require('../assets/left.json'),
         SWIPE_RIGHT: require('../assets/right.json'),
+        WAITING: require('../assets/waiting.json'),
     }
 }
