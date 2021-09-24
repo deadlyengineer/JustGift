@@ -55,6 +55,7 @@ export default {
         BTN_ACTIVE: 'rgba(32, 137, 253, 1)',
         BTN_INACTIVE: 'rgba(188, 188, 188, 1)',
         BORDER: 'rgba(112, 112, 112, 1)',
+        START_BTN: 'rgba(76, 32, 255, 1)',
     },
     IMAGE: {
         SPLASH: require('../assets/splash.png'),

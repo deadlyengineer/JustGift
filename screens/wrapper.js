@@ -1,5 +1,5 @@
 import React from 'react';
-import Loading from './loading';
+import Loading from './location';
 
 const AppWrapper = () => {
 
