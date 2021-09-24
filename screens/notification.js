@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, ImageBackground, TouchableOpacity, Pressable, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, ImageBackground, Text, TouchableOpacity, Pressable, ActivityIndicator, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Location from 'expo-location';
+import * as Notifications from 'expo-notifications';
 import Global from '../utils/global';
 import Loading from './loading';
 
-const LocationPermission = (props) => {
+const NotificationPermission = (props) => {
 
     const [isClicked, setClicked] = useState(false);
     const [isLoaded, setLoaded] = useState(false);
 
     useEffect(() => {
         (async () => {
-            const { status } = await Location.getForegroundPermissionsAsync();
-            if(status !== 'granted')
+            const response = await Notifications.getPermissionsAsync();
+            if(response.ios.status !== Notifications.IosAuthorizationStatus.AUTHORIZED)
                 setLoaded(true);
             else
-                props.navigation.navigate('Notification');
+                props.navigation.navigate('Instruction');
         })();
     }, []);
 
     const pressSubmitAction = () => {
         setClicked(true);
         (async () => {
-            const { status } = await Location.requestForegroundPermissionsAsync();
-            if(status !== 'granted') {
-                Alert.alert('Your location permission is denied');
+            const response = await Notifications.requestPermissionsAsync({
+                ios: {
+                    allowAlert: true,
+                    allowBadge: true,
+                    allowSound: true,
+                    allowAnnouncements: true,
+                },
+            });
+            if(response.ios.status != Notifications.IosAuthorizationStatus.AUTHORIZED) {
+                Alert.alert('Your notification permission is denied');
                 setClicked(false);
             } else {
-                props.navigation.navigate('Notification');
+                props.navigation.navigate('Instruction');
             }
         })();
     }
@@ -37,7 +44,7 @@ const LocationPermission = (props) => {
         return (<Loading/>);
 
     return (
-        <ImageBackground source={Global.IMAGE.LOCATION} style={styles.bgContainer}>
+        <ImageBackground source={Global.IMAGE.NOTIFY} style={styles.bgContainer}>
             <TouchableOpacity onPress={pressSubmitAction}>
                 <LinearGradient
                     colors={['rgba(232, 64, 125, 1)', 'rgba(238, 127, 94, 1)']}
@@ -47,12 +54,12 @@ const LocationPermission = (props) => {
                 >
                     {
                         isClicked ? <ActivityIndicator size='large' color='white'/>
-                                  : <Text style={styles.btnText}>ALLOW LOCATION</Text>
+                                  : <Text style={styles.btnText}>I WANT TO BE NOTIFIED</Text>
                     }
                 </LinearGradient>
             </TouchableOpacity>
-            <Pressable style={styles.moreBtn} onPress={() => props.navigation.navigate('Notification')}>
-                <Text style={styles.moreText}>TELL ME MORE</Text>
+            <Pressable style={styles.moreBtn} onPress={() => props.navigation.navigate('Instruction')}>
+                <Text style={styles.moreText}>NOT NOW</Text>
             </Pressable>
         </ImageBackground>
     );
@@ -88,4 +95,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LocationPermission;
+export default NotificationPermission;
