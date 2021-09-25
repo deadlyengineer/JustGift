@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -17,7 +17,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.hypertapp.justgift",
+      "buildNumber": "1.0.4",
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "App uses your location permission to get where you are now.",
+        "NSLocationWhenInUseUsageDescription": "App uses your location permission to get where you are now.",
+        "NSLocationAlwaysUsageDescription": "App uses your location permission to get where you are now.",
+        "NSPhotoLibraryUsageDescription": "App uses your media library permission to get a picture for avatars."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +36,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "This is a project for Ben Rosenfeld."
   }
 }

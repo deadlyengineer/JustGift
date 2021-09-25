@@ -1,4 +1,4 @@
-import { CHANGE_RECIPIENT, CHANGE_USER, CHANGE_GUEST, CHANGE_NOTIFICATION_STATUS } from '../constants';
+import { CHANGE_RECIPIENT, CHANGE_USER, CHANGE_GUEST, CHANGE_NOTIFICATION_STATUS, CHECK_FIRST_RUNNIG } from '../constants';
 
 export function changeRecipient(recipient) {
 
@@ -29,5 +29,13 @@ export function changeGuest(guestId) {
     return {
         type: CHANGE_GUEST,
         payload: guestId
+    }
+}
+
+export function checkFirstRunning(flag) {
+
+    return {
+        type: CHECK_FIRST_RUNNIG,
+        payload: flag
     }
 }

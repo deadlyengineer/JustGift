@@ -1,7 +1,8 @@
-import { CHANGE_NOTIFICATION_STATUS } from '../constants';
+import { CHANGE_NOTIFICATION_STATUS, CHECK_FIRST_RUNNIG } from '../constants';
 
 const initialState = {
     notifyStatus: false,
+    isFirstRun: false,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -11,6 +12,12 @@ const settingReducer = (state = initialState, action) => {
                 ...state,
                 notifyStatus: action.payload
             };
+
+        case CHECK_FIRST_RUNNIG:
+            return {
+                ...state,
+                isFirstRun: action.payload
+            }
 
         default:
             return state;

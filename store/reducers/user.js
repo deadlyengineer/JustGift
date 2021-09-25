@@ -1,4 +1,4 @@
-import { CHANGE_RECIPIENT, CHANGE_USER } from '../constants';
+import { CHANGE_GUEST, CHANGE_RECIPIENT, CHANGE_USER } from '../constants';
 
 const initialState = {
     userId: null,
@@ -18,6 +18,12 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userId: action.payload
+            }
+
+        case CHANGE_GUEST:
+            return {
+                ...state,
+                guestId: action.payload
             }
 
         default:
