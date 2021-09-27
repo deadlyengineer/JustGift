@@ -1,18 +1,74 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Pressable } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import SwipeCards from 'react-native-swipe-cards-deck';
+import Avatar from './components/avatar';
 import Global from '../utils/global';
+import Header from './components/header';
 import Loading from './loading';
 import GiftCard from './components/giftcard';
+import { getProducts } from '../firebase/crud';
 
 const Product = () => {
 
+    const [isLoaded, setLoaded] = useState(false);
+    const [detailVisible, setDetailVisible] = useState(false);
+    const [filterVisible, setFilterVisible] = useState(false);
+    const [contactVisible, setContactVisible] = useState(false);
+    const [pickerVisible, setPickerVisible] = useState(false);
+    const [productData, setProductData] = useState(false);
+    const [itemDetail, setItemDetail] = useState({});
+    const [filterOption, setFilterOption] = useState({ price: 0, age: 9, gender: 2 });
     const tinderCards = useRef(null);
 
+    useEffect(() => {
+        setLoaded(false);
+        getProducts(filterOption).then(result => {
+            setProductData(result);
+            setLoaded(true);
+        }).catch(err => console.log(err));
+    }, [filterOption]);
+
+    const handleNope = () => {
+        return true;
+    }
+    
+    const handleYup = card => {
+        addToFavorite(card);
+        return true;
+    }
+
+    const pressDislikeAction = () => {
+        tinderCards.current.swipeNope();
+    }
+
+    const pressLikeAction = () => {
+        addToFavorite(tinderCards.current.state.card);
+        tinderCards.current.swipeYup();
+    }
+
+    const pressDetailView = item => {
+        const detailData = {
+            currency: item.currency,
+            price: item.price,
+            name: item.name,
+            description: item.description,
+            review: item.review,
+        };
+        setItemDetail(detailData);
+        setDetailVisible(true);
+    }
+
+    const addToFavorite = item => {
+
+    }
+
+    if(!isLoaded)
+        return (<Loading/>);
+
     const renderCardItem = item => (
-        <GiftCard data={item} dotColor={Global.COLOR.PRIMARY}/>
+        <GiftCard data={item} dotColor={Global.COLOR.PRIMARY} onClickDetail={() => pressDetailView(item)}/>
     );
 
     const renderNoCardItem = () => (
@@ -46,28 +102,28 @@ const Product = () => {
             <View style={styles.footer}>
                 <View style={styles.filterContainer}>
                     <TouchableOpacity style={styles.filterBtn}>
-                        <LinearGradient colors={['rgba(250, 250, 250, 1)', 'rgba(240, 240, 240, 1)']} style={[styles.gradContainer, { borderRadius: global.SIZE.W_55 / 2 }]}>
+                        <LinearGradient colors={['rgba(250, 250, 250, 1)', 'rgba(240, 240, 240, 1)']} style={[styles.gradContainer, { borderRadius: Global.SIZE.W_55 / 2 }]}>
                             <Icon name='filter' type='font-awesome-5' color={Global.COLOR.ICON_ACTIVE} size={20}/>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.dislikeContainer}>
                     <TouchableOpacity style={styles.roundBtn}>
-                        <LinearGradient colors={['rgba(249, 219, 222, 1)', 'white']} style={styles.gradContainer}>
+                        <LinearGradient colors={['rgba(249, 219, 222, 1)', 'white']} style={styles.gradContainer} onPress={pressDislikeAction}>
                             <Icon name='close' type='ionicon' color={Global.COLOR.PRIMARY} size={40}/>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.likeContainer}>
                     <TouchableOpacity style={styles.roundBtn}>
-                        <LinearGradient colors={['rgba(220, 249, 232, 1)', 'white']} style={styles.gradContainer}>
+                        <LinearGradient colors={['rgba(220, 249, 232, 1)', 'white']} style={styles.gradContainer} onPress={pressLikeAction}>
                             <Icon name='heart' type='ionicon' color={Global.COLOR.SECONDARY} size={37}/>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.recipientContainer}>
-                    <Pressable>
-                        
+                    <Pressable onPress={() => setPickerVisible(true)}>
+                        <Avatar source={recipient.avatar} size={Global.SIZE.W_55}/>
                     </Pressable>
                 </View>
             </View>
@@ -100,9 +156,9 @@ const styles = StyleSheet.create({
         paddingTop: 13,
     },
     filterBtn: {
-        width: global.SIZE.W_55,
-        height: global.SIZE.W_55,
-        borderRadius: global.SIZE.W_55 / 2,
+        width: Global.SIZE.W_55,
+        height: Global.SIZE.W_55,
+        borderRadius: Global.SIZE.W_55 / 2,
         backgroundColor: 'white',
         shadowOffset: { width: 2, height: 5 },
         shadowRadius: 10,
@@ -115,9 +171,9 @@ const styles = StyleSheet.create({
         paddingTop: 30,
     },
     roundBtn: {
-        width: global.SIZE.W_60,
-        height: global.SIZE.W_60,
-        borderRadius: global.SIZE.W_60 / 2,
+        width: Global.SIZE.W_60,
+        height: Global.SIZE.W_60,
+        borderRadius: Global.SIZE.W_60 / 2,
         backgroundColor: 'white',
         shadowOffset: { width: 2, height: 5 },
         shadowRadius: 10,
@@ -131,7 +187,7 @@ const styles = StyleSheet.create({
     },
     gradContainer: {
         flex: 1,
-        borderRadius: global.SIZE.W_60 / 2,
+        borderRadius: Global.SIZE.W_60 / 2,
         justifyContent: 'center',
         alignItems: 'center',
     },

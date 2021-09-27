@@ -62,7 +62,7 @@ const GiftCard = (props) => {
                     </Pressable>
                 </View>
                 <View style={styles.footer}>
-                    <Pressable>
+                    <Pressable onPress={props.onClickDetail}>
                         <Icon name='information' type='material-community' color='black' size={30}/>
                     </Pressable>
                     <View style={styles.infoContainer}>

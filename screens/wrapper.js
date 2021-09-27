@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { firebase } from '../firebase/config';
 import { useDispatch } from 'react-redux';
-import { changeUser, changeGuest } from '../store/actions/actions';
-import Loading from './location';
+import { changeUser } from '../store/actions/actions';
+import AppNavigator from './product';
 
 const AppWrapper = () => {
 
@@ -22,7 +22,7 @@ const AppWrapper = () => {
         return subscriber;
     }, []);
 
-    return (<Loading/>);
+    return (<AppNavigator/>);
 }
 
 export default AppWrapper;
