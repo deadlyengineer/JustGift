@@ -26,9 +26,6 @@ const FavList = (props) => {
                     ItemSeparatorComponent={null}
                 />
             </View>
-            <View style={styles.modalContainer}>
-
-            </View>
         </View>
     );
 }
@@ -43,9 +40,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column-reverse',
         paddingBottom: 30,
-    },
-    modalContainer: {
-        
     },
 });
 
