@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
     likeContainer: {
         flex: 1,
         paddingTop: 30,
+        alignItems: 'flex-end',
     },
     gradContainer: {
         flex: 1,
@@ -210,6 +211,7 @@ const styles = StyleSheet.create({
     recipientContainer: {
         flex: 1,
         paddingTop: 13,
+        alignItems: 'flex-end',
     },
     avatar: {
         width: Global.SIZE.W_55,

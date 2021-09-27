@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
-import FastImage from 'expo-fast-image';
 import LottieView from 'lottie-react-native';
 import { Icon } from 'react-native-elements';
 import Pagination from 'react-native-dots-pagination';
