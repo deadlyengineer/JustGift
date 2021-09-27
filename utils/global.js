@@ -79,5 +79,8 @@ export default {
         SWIPE_LEFT: require('../assets/left.json'),
         SWIPE_RIGHT: require('../assets/right.json'),
         WAITING: require('../assets/waiting.json'),
+        TEAR: require('../assets/tear.json'),
+        OFFLINE: require('../assets/offline.json'),
+        CART: require('../assets/cart.json'),
     }
 }
