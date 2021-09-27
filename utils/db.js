@@ -34,3 +34,14 @@ export async function getLocalContacts() {
 
     return result;
 }
+
+export async function getLocalFavorites() {
+    getLocalContacts().then(res => {
+        let items = [];
+        if(res !== null && res.length > 0) {
+            
+        }
+    }).catch(err => {
+        console.log(err);
+    });
+}

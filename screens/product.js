@@ -30,7 +30,7 @@ const Product = (props) => {
         //const listener = props.navigation.addListener('focus', () => {
         //    console.log('focused');
         //});
-//
+        
         //return () => listener.remove();
     }, []);
 
