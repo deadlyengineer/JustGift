@@ -17,3 +17,20 @@ export async function initDB() {
         return true;
     }
 }
+
+export async function getLocalContacts() {
+    const result = FileSystem.readAsStringAsync(fileDir).then(res => {
+        if(!res) {
+            const contacts = [];
+            return contacts;
+        } else {
+            const contacts = JSON.parse(res);
+            return contacts.data;
+        }
+    }).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}

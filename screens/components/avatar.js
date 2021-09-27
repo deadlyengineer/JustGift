@@ -1,6 +1,6 @@
 import React from 'react';
+import { Image } from 'react-native';
 import TextAvatar from 'react-native-text-avatar';
-import FastImage from 'expo-fast-image';
 
 const Avatar = (props) => {
     
@@ -15,7 +15,7 @@ const Avatar = (props) => {
         );
 
     return (
-        <FastImage source={{ uri: props.source }} style={{ width: props.size, height: props.size, borderRadius: props.size / 2 }}/>
+        <Image source={{ uri: props.source }} style={{ width: props.size, height: props.size, borderRadius: props.size / 2 }}/>
     );
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import FastImage from 'expo-fast-image';
 import LottieView from 'lottie-react-native';
 import { Icon } from 'react-native-elements';
@@ -29,9 +29,9 @@ const GiftCard = (props) => {
                     <Pressable style={styles.imgContainer} onPress={pressCardImage}>
                         {
                             activeIndex == 0 ?
-                                <FastImage uri={props.data.img_1} cacheKey='0' style={styles.productImg}/>
+                                <Image source={{ uri: props.data.img_1 }} style={styles.productImg}/>
                             : activeIndex == 1 ?
-                                <FastImage uri={props.data.img_2} cacheKey='1' style={styles.productImg}/>
+                                <Image source={{ uri: props.data.img_2 }} style={styles.productImg}/>
                             :   <View style={styles.movContainer}>
                                     <Video
                                         ref={videoPlayer}
@@ -47,15 +47,17 @@ const GiftCard = (props) => {
                                             <Pressable style={movStatus ? styles.pauseBtn : styles.playBtn} onPress={pressPlayAction}>
                                                 {
                                                     movStatus ? <Icon name='pause' type='material-community' color='white' size={30}/>
-                                                              : <Icon name='play' type='material-communiyt' color='white' size={50}/>
+                                                              : <Icon name='play' type='material-community' color='white' size={50}/>
                                                 }
                                             </Pressable>
-                                        :   <LottieView
-                                                source={Global.ANIMATION.WAITING}
-                                                style={{ width: 200, height: 200 }}
-                                                autoPlay
-                                                loop
-                                            />
+                                        :   <View style={styles.waitingContainer}>
+                                                <LottieView
+                                                    source={Global.ANIMATION.WAITING}
+                                                    style={{ width: 200, height: 200 }}
+                                                    autoPlay
+                                                    loop
+                                                />
+                                            </View>
                                     }
                                 </View>
                         }
@@ -153,6 +155,11 @@ const styles = StyleSheet.create({
         backgroundColor: Global.COLOR.BTN_INACTIVE,
         bottom: 20,
         right: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    waitingContainer: {
+        position: 'absolute',
         justifyContent: 'center',
         alignItems: 'center',
     },

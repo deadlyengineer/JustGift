@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import SwipeCards from 'react-native-swipe-cards-deck';
@@ -9,8 +9,12 @@ import Header from './components/header';
 import Loading from './loading';
 import GiftCard from './components/giftcard';
 import { getProducts } from '../firebase/crud';
+import { useSelector } from 'react-redux';
 
-const Product = () => {
+const Product = (props) => {
+
+    const userId = useSelector(state => state.user.userId);
+    const recipient = useSelector(state => state.user.recipient);
 
     const [isLoaded, setLoaded] = useState(false);
     const [detailVisible, setDetailVisible] = useState(false);
@@ -21,6 +25,14 @@ const Product = () => {
     const [itemDetail, setItemDetail] = useState({});
     const [filterOption, setFilterOption] = useState({ price: 0, age: 9, gender: 2 });
     const tinderCards = useRef(null);
+
+    useEffect(() => {
+        //const listener = props.navigation.addListener('focus', () => {
+        //    console.log('focused');
+        //});
+//
+        //return () => listener.remove();
+    }, []);
 
     useEffect(() => {
         setLoaded(false);
@@ -123,7 +135,11 @@ const Product = () => {
                 </View>
                 <View style={styles.recipientContainer}>
                     <Pressable onPress={() => setPickerVisible(true)}>
-                        <Avatar source={recipient.avatar} size={Global.SIZE.W_55}/>
+                        {
+                            recipient == null ?
+                                <Image source={Global.IMAGE.UNKNOWN} style={styles.avatar}/>
+                            :   <Avatar source={recipient.avatar} size={Global.SIZE.W_55} firstName={recipient.first_name} lastName={recipient.last_name}/>
+                        }
                     </Pressable>
                 </View>
             </View>
@@ -194,6 +210,11 @@ const styles = StyleSheet.create({
     recipientContainer: {
         flex: 1,
         paddingTop: 13,
+    },
+    avatar: {
+        width: Global.SIZE.W_55,
+        height: Global.SIZE.W_55,
+        borderRadius: Global.SIZE.W_55 / 2,
     },
 });
 
