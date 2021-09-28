@@ -5,7 +5,7 @@ import { firebase } from '../firebase/config';
 import { useDispatch } from 'react-redux';
 import { changeUser } from '../store/actions/actions';
 import { initDB } from '../utils/db';
-import AppNavigator from '../navigations/auth';
+import AppNavigator from '../navigations/app';
 import Splash from './splash';
 import Offline from './offline';
 

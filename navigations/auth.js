@@ -12,7 +12,7 @@ export default createAppContainer(
         {
             Guide: { screen: Guide },
             Location: { screen: LocationPermission },
-            Notify: { screen: NotificationPermission },
+            Notification: { screen: NotificationPermission },
             Instruction: { screen: Instruction },
             LogIn: { screen: LogIn },
             SignIn: { screen: SignIn },

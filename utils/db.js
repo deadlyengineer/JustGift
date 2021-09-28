@@ -6,13 +6,14 @@ export async function initDB() {
     const fileInfo = await FileSystem.getInfoAsync(fileDir);
     if(!fileInfo.exists) {
         console.log('DB file does not exist');
-        FileSystem.writeAsStringAsync(fileDir, '').then(() => {
+        const result = FileSystem.writeAsStringAsync(fileDir, '').then(() => {
             //console.log('Success');
             return true;
         }).catch(err => {
             console.log(err);
             return false;
         });
+        return result;
     } else {
         return true;
     }

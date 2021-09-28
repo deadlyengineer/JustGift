@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     avatar: {
-        height: global.SIZE.W_60,
-        width: global.SIZE.W_60,
-        borderRadius: global.SIZE.W_60 / 2,
+        height: Global.SIZE.W_60,
+        width: Global.SIZE.W_60,
+        borderRadius: Global.SIZE.W_60 / 2,
     },
     infoContainer: {
         marginLeft: 20,

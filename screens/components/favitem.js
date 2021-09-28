@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
+import Global from '../../utils/global';
 
 const FavItem = (props) => {
 
@@ -29,8 +30,8 @@ const styles = StyleSheet.create({
     },
     item: {
         flexDirection: 'row',
-        width: global.SIZE.W_380,
-        height: global.SIZE.W_115,
+        width: Global.SIZE.W_380,
+        height: Global.SIZE.W_115,
         borderRadius: 10,
         marginHorizontal: 15,
         paddingHorizontal: 35,
