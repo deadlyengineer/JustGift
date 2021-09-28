@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebase } from '../firebase/config';
 import { useDispatch } from 'react-redux';
-import { changeUser } from '../store/actions/actions';
+import { changeNotify, changeUser, checkFirstRunning } from '../store/actions/actions';
 import { initDB } from '../utils/db';
 import AppNavigator from '../navigations/app';
 import Splash from './splash';
@@ -29,6 +30,25 @@ const AppWrapper = () => {
                 Alert.alert('Failed to load DB file');
         });
 
+        (async () => {
+            try {
+                const isFirstRun = await AsyncStorage.getItem('firstrun');
+                const isNotify = await AsyncStorage.getItem('notification');
+
+                if(isFirstRun == null || isFirstRun == '0')
+                    dispatch(checkFirstRunning(true));
+                else
+                    dispatch(checkFirstRunning(false));
+
+                if(isNotify == null || isNotify == '0')
+                    dispatch(changeNotify(false));
+                else
+                    dispatch(changeNotify(true));
+            } catch(e) {
+                console.log(e);
+            }
+        })();
+
         const subscriber = firebase.auth().onAuthStateChanged(user => {
             //console.log(user.uid);
             if(user)
@@ -47,8 +67,10 @@ const AppWrapper = () => {
                 setConnecting(false);
                 setOnline(true);
             } else {
-                setConnecting(false);
-                Alert.alert('Failed to connect to internet');
+                setTimeout(() => {
+                    setConnecting(false);
+                    Alert.alert('Failed to connect to internet');
+                }, 2000);
             }
         });
     }

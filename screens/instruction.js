@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import LottieView from 'lottie-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Global from '../utils/global';
+import { useSelector } from 'react-redux';
 
 const Instruction = (props) => {
 
+    const isFirstRun = useSelector(state => state.setting.isFirstRun);
     const [direction, setDirection] = useState(false);
     const animator = useRef(null);
 
@@ -16,8 +19,19 @@ const Instruction = (props) => {
 
     const handleSwipeLeft = () => {
         //console.log('Left Swiped');
-        if(direction)
-            props.navigation.navigate('Main');
+        if(direction) {
+            if(isFirstRun)
+                AsyncStorage.setItem('firstrun', '1', err => {
+                    if(err) {
+                        console.log('Error');
+                        throw err;
+                    } else {
+                        props.navigation.navigate('Main');
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+        }
     }
 
     const handleSwipeRight = () => {

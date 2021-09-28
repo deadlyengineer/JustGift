@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, Pressable, TouchableOpacity } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Pagination from 'react-native-dots-pagination';
 import { SimpleAnimation } from 'react-native-simple-animations';
 import Global from '../utils/global';
+import Loading from './loading';
+import { useSelector } from 'react-redux';
 
 const Guide = (props) => {
 
+    const isFirstRun = useSelector(state => state.setting.isFirstRun);
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(false);
+    const [isLoaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        if(isFirstRun)
+            setLoaded(true);
+        else
+            props.navigation.navigate('Main');
+    }, []);
 
     const handleSwipeLeft = () => {
         setDirection(false);
@@ -21,6 +32,9 @@ const Guide = (props) => {
         if(activeIndex > 0)
             setActiveIndex(activeIndex => activeIndex - 1);
     }
+
+    if(!isLoaded)
+        return (<Loading/>);
 
     return (
         <View style={styles.bgContainer}>
