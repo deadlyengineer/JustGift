@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { firebase } from '../firebase/config';
-import global from '../utils/global';
+import Global from '../utils/global';
 import SvgIcon from '../utils/svg';
 
 const SignIn = (props) => {

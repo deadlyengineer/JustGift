@@ -2,7 +2,7 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Icon } from 'react-native-elements';
-import global from '../utils/global';
+import Global from '../utils/global';
 
 import Product from '../screens/product';
 import Contact from '../screens/contact';
@@ -27,7 +27,7 @@ export default createAppContainer(
                                 name='gift'
                                 type='material-community'
                                 size={30}
-                                color={focused ? global.COLOR.PRIMARY : global.COLOR.ICON_INACTIVE}
+                                color={focused ? Global.COLOR.PRIMARY : Global.COLOR.ICON_INACTIVE}
                                 iconStyle={{ width: 30, height: 30 }}
                             />
                         )
@@ -49,7 +49,7 @@ export default createAppContainer(
                                 name='heart'
                                 type='material-community'
                                 size={30}
-                                color={focused ? global.COLOR.SECONDARY : global.COLOR.ICON_INACTIVE}
+                                color={focused ? Global.COLOR.SECONDARY : Global.COLOR.ICON_INACTIVE}
                                 iconStyle={{ width: 30, height: 30 }}
                             />
                         )
@@ -70,7 +70,7 @@ export default createAppContainer(
                                 name='account-multiple'
                                 type='material-community'
                                 size={30}
-                                color={focused ? global.COLOR.ICON_CONTACT : global.COLOR.ICON_INACTIVE}
+                                color={focused ? Global.COLOR.ICON_CONTACT : Global.COLOR.ICON_INACTIVE}
                                 iconStyle={{ width: 30, height: 30 }}
                             />
                         )
@@ -91,7 +91,7 @@ export default createAppContainer(
                                 name='cog'
                                 type='material-community'
                                 size={30}
-                                color={focused ? 'black' : global.COLOR.ICON_INACTIVE}
+                                color={focused ? 'black' : Global.COLOR.ICON_INACTIVE}
                                 iconStyle={{ width: 30, height: 30 }}
                             />
                         )
@@ -101,7 +101,7 @@ export default createAppContainer(
         },
         {
             initialRouteName: 'One',
-            barStyle: { backgroundColor: 'white', height: global.SIZE.W_92 },
+            barStyle: { backgroundColor: 'white', height: Global.SIZE.W_92 },
             resetOnBlur: true,
             shifting: false,
             keyboardHidesNavigationBar: true,

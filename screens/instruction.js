@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
         width: Global.SIZE.W_363,
         height: Global.SIZE.W_522,
         top: 115,
+        left: (Global.SIZE.WIDTH - Global.SIZE.W_363) / 2,
         backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center',
