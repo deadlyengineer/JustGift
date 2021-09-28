@@ -11,7 +11,7 @@ const priceOptions = [
     { min: 200, max: 999999 },
 ];
 
-export function getProducts(filterOption) {
+export async function getProducts(filterOption) {
     const result = db.collection('products').get().then(res => {
         let products = [];
         res.forEach(doc => {
@@ -40,6 +40,21 @@ export function getProducts(filterOption) {
     return result;
 }
 
-export function createGuest() {
+export async function uploadImage(avatar, userId) {
+    const response = await fetch(avatar);
+    const blob = await response.blob();
+    let localUri = avatar;
+    let fileName = userId + '%' + localUri.split('/').pop();
+    let ref = firebase.storage().ref(fileName);
+    const result = ref.put(blob).then(() => {
+        const url = ref.getDownloadURL().then(res => {
+            return res;
+        });
+        return url;
+    }).catch(err => {
+        console.log(err);
+        return null;
+    });
     
+    return result;
 }

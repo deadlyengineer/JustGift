@@ -45,3 +45,39 @@ export async function getLocalFavorites() {
         console.log(err);
     });
 }
+
+export async function createLocalContact(data) {
+    const result = FileSystem.readAsStringAsync(fileDir).then(res => {
+        if(!res) {
+            const content = {
+                data: [data]
+            };
+            FileSystem.writeAsStringAsync(fileDir, JSON.stringify(content)).then(() => {
+                //console.log('write success');
+                return true;
+            }).catch(err => {
+                console.log(err);
+                return false;
+            });
+        } else {
+            let content = JSON.parse(res);
+            content.data.push(data);
+            FileSystem.writeAsStringAsync(fileDir, JSON.stringify(content)).then(() => {
+                //console.log('write success');
+                return true;
+            }).catch(err => {
+                console.log(err);
+                return false;
+            });
+        }
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
+
+export async function updateLocalContent() {
+    
+}

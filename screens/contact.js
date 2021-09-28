@@ -12,6 +12,7 @@ const Contact = () => {
     const [addVisible, setAddVisible] = useState(false);
     const [editVisible, setEditVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState({});
+    const [data, setData] = useState([]);
 
     const pressContactItem = item => {
         setSelectedItem(item);
