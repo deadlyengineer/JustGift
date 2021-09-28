@@ -67,7 +67,7 @@ const EditDlg = (props) => {
 
     const pressSubmitAction = () => {
         if(userId == null) {
-
+            
         } else {
 
         }
