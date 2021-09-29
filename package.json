@@ -39,6 +39,7 @@
     "react-native-svg": "12.1.1",
     "react-native-swipe-cards-deck": "^0.3.0",
     "react-native-swipe-gestures": "^1.0.5",
+    "react-native-switch-toggle": "^2.2.1",
     "react-native-text-avatar": "^1.0.7",
     "react-native-web": "~0.13.12",
     "react-native-wheel-pick": "^1.1.0",
