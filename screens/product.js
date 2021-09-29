@@ -10,6 +10,7 @@ import Loading from './loading';
 import GiftCard from './components/giftcard';
 import { getProducts } from '../firebase/crud';
 import { useSelector } from 'react-redux';
+import FilterDlg from './components/filter';
 
 const Product = (props) => {
 
@@ -113,22 +114,22 @@ const Product = (props) => {
             </View>
             <View style={styles.footer}>
                 <View style={styles.filterContainer}>
-                    <TouchableOpacity style={styles.filterBtn}>
+                    <TouchableOpacity style={styles.filterBtn} onPress={() => setFilterVisible(true)}>
                         <LinearGradient colors={['rgba(250, 250, 250, 1)', 'rgba(240, 240, 240, 1)']} style={[styles.gradContainer, { borderRadius: Global.SIZE.W_55 / 2 }]}>
                             <Icon name='filter' type='font-awesome-5' color={Global.COLOR.ICON_ACTIVE} size={20}/>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.dislikeContainer}>
+                <View style={styles.dislikeContainer} onPress={pressDislikeAction}>
                     <TouchableOpacity style={styles.roundBtn}>
-                        <LinearGradient colors={['rgba(249, 219, 222, 1)', 'white']} style={styles.gradContainer} onPress={pressDislikeAction}>
+                        <LinearGradient colors={['rgba(249, 219, 222, 1)', 'white']} style={styles.gradContainer}>
                             <Icon name='close' type='ionicon' color={Global.COLOR.PRIMARY} size={40}/>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.likeContainer}>
-                    <TouchableOpacity style={styles.roundBtn}>
-                        <LinearGradient colors={['rgba(220, 249, 232, 1)', 'white']} style={styles.gradContainer} onPress={pressLikeAction}>
+                    <TouchableOpacity style={styles.roundBtn} onPress={pressLikeAction}>
+                        <LinearGradient colors={['rgba(220, 249, 232, 1)', 'white']} style={styles.gradContainer}>
                             <Icon name='heart' type='ionicon' color={Global.COLOR.SECONDARY} size={37}/>
                         </LinearGradient>
                     </TouchableOpacity>
@@ -143,6 +144,12 @@ const Product = (props) => {
                     </Pressable>
                 </View>
             </View>
+            <FilterDlg
+                visible={filterVisible}
+                data={filterOption}
+                onChangeVisible={setFilterVisible}
+                onChangeValue={setFilterOption}
+            />
         </View>
     );
 }
