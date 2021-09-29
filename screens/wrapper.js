@@ -34,7 +34,7 @@ const AppWrapper = () => {
             try {
                 const isFirstRun = await AsyncStorage.getItem('firstrun');
                 const isNotify = await AsyncStorage.getItem('notification');
-
+                
                 if(isFirstRun == null || isFirstRun == '0')
                     dispatch(checkFirstRunning(true));
                 else

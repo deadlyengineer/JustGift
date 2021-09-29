@@ -53,23 +53,25 @@ export async function createLocalContact(data) {
             const content = {
                 data: [data]
             };
-            FileSystem.writeAsStringAsync(fileDir, JSON.stringify(content)).then(() => {
+            const writeResult = FileSystem.writeAsStringAsync(fileDir, JSON.stringify(content)).then(() => {
                 //console.log('write success');
                 return true;
             }).catch(err => {
                 console.log(err);
                 return false;
             });
+            return writeResult;
         } else {
             let content = JSON.parse(res);
             content.data.push(data);
-            FileSystem.writeAsStringAsync(fileDir, JSON.stringify(content)).then(() => {
+            const writeResult = FileSystem.writeAsStringAsync(fileDir, JSON.stringify(content)).then(() => {
                 //console.log('write success');
                 return true;
             }).catch(err => {
                 console.log(err);
                 return false;
             });
+            return writeResult;
         }
     }).catch(err => {
         console.log(err);

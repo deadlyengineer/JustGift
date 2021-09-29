@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,30 +9,37 @@ import Header from './components/header';
 import Loading from './loading';
 import GiftCard from './components/giftcard';
 import { getProducts } from '../firebase/crud';
-import { useSelector } from 'react-redux';
+import { getLocalContacts } from '../utils/db';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeRecipient } from '../store/actions/actions';
 import FilterDlg from './components/filter';
+import DetailDlg from './components/detail';
+import NewDlg from './components/new';
+import PickerDlg from './components/picker';
 
 const Product = (props) => {
 
     const userId = useSelector(state => state.user.userId);
     const recipient = useSelector(state => state.user.recipient);
+    const dispatch = useDispatch();
 
     const [isLoaded, setLoaded] = useState(false);
     const [detailVisible, setDetailVisible] = useState(false);
     const [filterVisible, setFilterVisible] = useState(false);
     const [contactVisible, setContactVisible] = useState(false);
     const [pickerVisible, setPickerVisible] = useState(false);
-    const [productData, setProductData] = useState(false);
+    const [productData, setProductData] = useState([]);
+    const [contactData, setContactData] = useState([]);
     const [itemDetail, setItemDetail] = useState({});
     const [filterOption, setFilterOption] = useState({ price: 0, age: 9, gender: 2 });
     const tinderCards = useRef(null);
 
-    useEffect(() => {
-        //const listener = props.navigation.addListener('focus', () => {
-        //    console.log('focused');
-        //});
+    useLayoutEffect(() => {
+        const listener = props.navigation.addListener('didFocus', () => {
+            updateContactData();
+        });
         
-        //return () => listener.remove();
+        return () => listener.remove();
     }, []);
 
     useEffect(() => {
@@ -42,6 +49,29 @@ const Product = (props) => {
             setLoaded(true);
         }).catch(err => console.log(err));
     }, [filterOption]);
+
+    useEffect(() => {
+        if(!contactVisible)
+            updateContactData(true);
+    }, [contactVisible]);
+
+    const updateContactData = (flag = false) => {
+        if(userId == null) {
+            getLocalContacts().then(result => {
+                if(result != null) {
+                    if(result.length < 1)
+                        setContactVisible(true);
+                    else {
+                        setContactData(result);
+                        if(flag)
+                            dispatch(changeRecipient(result[0]));
+                    }
+                }
+            }).catch(err => console.log(err));
+        } else {
+
+        }
+    }
 
     const handleNope = () => {
         return true;
@@ -120,8 +150,8 @@ const Product = (props) => {
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.dislikeContainer} onPress={pressDislikeAction}>
-                    <TouchableOpacity style={styles.roundBtn}>
+                <View style={styles.dislikeContainer}>
+                    <TouchableOpacity style={styles.roundBtn} onPress={pressDislikeAction}>
                         <LinearGradient colors={['rgba(249, 219, 222, 1)', 'white']} style={styles.gradContainer}>
                             <Icon name='close' type='ionicon' color={Global.COLOR.PRIMARY} size={40}/>
                         </LinearGradient>
@@ -149,6 +179,21 @@ const Product = (props) => {
                 data={filterOption}
                 onChangeVisible={setFilterVisible}
                 onChangeValue={setFilterOption}
+            />
+            <DetailDlg
+                visible={detailVisible}
+                data={itemDetail}
+                onChangeVisible={setDetailVisible}
+            />
+            <NewDlg
+                visible={contactVisible}
+                onChangeVisible={setContactVisible}
+                required
+            />
+            <PickerDlg
+                visible={pickerVisible}
+                onChangeVisible={setPickerVisible}
+                data={contactData}
             />
         </View>
     );

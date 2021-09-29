@@ -85,8 +85,10 @@ const NewDlg = (props) => {
             };
             createLocalContact(data).then(result => {
                 if(result) {
-                    initStates();
                     props.onChangeVisible(false);
+                    initStates();
+                } else {
+                    Alert.alert('Failed to add a new event');
                 }
             }).catch(err => {
                 console.log(err);

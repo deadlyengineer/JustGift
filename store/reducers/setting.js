@@ -2,7 +2,7 @@ import { CHANGE_NOTIFICATION_STATUS, CHECK_FIRST_RUNNIG } from '../constants';
 
 const initialState = {
     notifyStatus: false,
-    isFirstRun: true,
+    isFirstRun: false,
 };
 
 const settingReducer = (state = initialState, action) => {

@@ -51,7 +51,7 @@ const PickerDlg = (props) => {
                         <TouchableOpacity style={{ marginRight: 30 }} onPress={() => pressSelectAction('left')}>
                             <Icon name='chevron-left' type='material-community' size={30} color={Global.COLOR.BTN_ACTIVE}/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={pressSelectAction('right')}>
+                        <TouchableOpacity onPress={() => pressSelectAction('right')}>
                             <Icon name='chevron-right' type='material-community' size={30} color={Global.COLOR.BTN_ACTIVE}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ position: 'absolute', right: 30 }} onPress={pressSubmitAction}>

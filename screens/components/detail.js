@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         lineHeight: 22,
         color: Global.COLOR.BTN_MORE,
+        marginBottom: 30,
     },
 });
 
