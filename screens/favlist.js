@@ -61,6 +61,10 @@ const FavList = (props) => {
         }
     }, [recipient, isLoaded]);
 
+    const pressItemAction = item => {
+        props.navigation.navigate('Favorite', item);
+    }
+
     if(!isLoaded)
         return (<Loading/>);
 
@@ -68,7 +72,7 @@ const FavList = (props) => {
         <View style={styles.bgContainer}>
             <Header page='favlist'/>
             <View style={styles.body}>
-                <Pressable onPress={() => setPickerVisible(true)}>
+                <Pressable onPress={() => setPickerVisible(true)} style={{ marginTop: 10 }}>
                     <Avatar source={recipient.avatar} size={Global.SIZE.W_60} firstName={recipient.first_name} lastName={recipient.last_name}/>
                 </Pressable>
                 {
@@ -84,7 +88,7 @@ const FavList = (props) => {
                         </View>
                     :   <FlatList
                             data={data}
-                            renderItem={({item}) => <FavItem diffKey={item.docId} data={item}/>}
+                            renderItem={({item}) => <FavItem diffKey={item.docId} data={item} onClickItem={() => pressItemAction(item)}/>}
                             keyExtractor={item => item.docId}
                             refreshing={loading}
                             onRefresh={() => {}}

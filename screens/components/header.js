@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Pressable } from 'react-native';
 import { Icon } from 'react-native-elements';
 import SvgIcon from '../../utils/svg';
 import Global from '../../utils/global';
@@ -15,6 +15,13 @@ const Header = (props) => {
                     <TouchableOpacity style={styles.addBtn} onPress={props.onClickAdd}>
                         <Icon name='add-circle' type='ionicon' color={Global.COLOR.PRIMARY} size={30}/>
                     </TouchableOpacity>
+                :   null
+            }
+            {
+                props.page == 'favorite' ?
+                    <Pressable style={styles.backBtn} onPress={props.onClickBack}>
+                        <Icon name='arrow-left' type='material-community' size={25}/>
+                    </Pressable>
                 :   null
             }
         </View>
@@ -40,6 +47,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 40,
         alignSelf: 'center',
+    },
+    backBtn: {
+        position: 'absolute',
+        left: 20,
     },
 });
 

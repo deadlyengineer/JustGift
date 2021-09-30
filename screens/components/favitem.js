@@ -6,7 +6,7 @@ const FavItem = (props) => {
 
     return (
         <View key={props.diffKey} style={styles.container}>
-            <Pressable style={styles.item}>
+            <Pressable style={styles.item} onPress={props.onClickItem}>
                 <View style={{ flex: 6 }}>
                     <Text style={styles.priceText}>{(props.data.currency == '0' ? '£' : '$') + props.data.price}</Text>
                     <Text style={styles.nameText}>{props.data.name}</Text>
