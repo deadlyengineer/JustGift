@@ -81,8 +81,33 @@ export async function createLocalContact(data) {
     return result;
 }
 
-export async function updateLocalContact() {
-    
+export async function updateLocalContact(origin, data) {
+    const result = FileSystem.readAsStringAsync(fileDir).then(res => {
+        let contacts = JSON.parse(res);
+        const idx = contacts.data.findIndex(element => element.first_name == origin.first_name && element.last_name == origin.last_name);
+        if(idx > -1) {
+            contacts.data[idx].avatar = data.avatar;
+            contacts.data[idx].first_name = data.first_name;
+            contacts.data[idx].last_name = data.last_name;
+            contacts.data[idx].occasion = data.occasion;
+            contacts.data[idx].date = data.date;
+
+            const writeResult = FileSystem.writeAsStringAsync(fileDir, JSON.stringify(contacts)).then(() => {
+                //console.log('write success');
+                return true;
+            }).catch(err => {
+                console.log(err);
+                return false;
+            });
+            
+            return writeResult;
+        }
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
 }
 
 export async function deleteLocalContact() {

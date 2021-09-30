@@ -8,7 +8,7 @@ import Avatar from './avatar';
 import Global from '../../utils/global';
 import { useSelector } from 'react-redux';
 import { getStringFromDate } from '../../utils/helper';
-import { updateLocalContent } from '../../utils/db';
+import { updateLocalContact, updateLocalContent } from '../../utils/db';
 import { uploadImage } from '../../firebase/crud';
 
 const EditDlg = (props) => {
@@ -74,10 +74,22 @@ const EditDlg = (props) => {
     }
 
     const pressSubmitAction = () => {
+        const data = {
+            avatar: avatar,
+            first_name: firstName,
+            last_name: lastName,
+            occasion: occasion,
+            date: date,
+        };
         if(userId == null) {
-            
+            updateLocalContact(props.data, data).then(result => {
+                if(result)
+                    props.onChangeVisible(false);
+                else
+                    Alert.alert('Failed to update the event');
+            }).catch(err => console.log(err));
         } else {
-
+            
         }
     }
 

@@ -24,16 +24,21 @@ const PickerDlg = (props) => {
     }
 
     const pressSelectAction = flag => {
+        //console.log(picker.current);
         const list = getRecipientList(props.data);
         const current = picker.current.state.selectedValue;
         const idx = list.findIndex(element => element === current);
         if(idx > -1) {
             if(flag == 'left') {
-                if(idx > 0)
+                if(idx > 0) {
                     dispatch(changeRecipient(props.data[idx-1]));
+                    picker.current.state.selectedValue = props.data[idx-1].first_name + ' ' + props.data[idx-1].last_name;
+                }
             } else {
-                if(idx < list.length - 1)
+                if(idx < list.length - 1) {
                     dispatch(changeRecipient(props.data[idx+1]));
+                    picker.current.state.selectedValue = props.data[idx+1].first_name + ' ' + props.data[idx+1].last_name;
+                }
             }
         }
     }
@@ -63,7 +68,7 @@ const PickerDlg = (props) => {
                         style={styles.picker}
                         selectedValue={getCurrentRecipient(recipient)}
                         pickerData={getRecipientList(props.data)}
-                        onValueChange={value => {}}
+                        onValueChange={value => {console.log(value)}}
                     />
                 </View>
             </View>

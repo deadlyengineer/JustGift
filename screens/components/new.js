@@ -18,7 +18,7 @@ const NewDlg = (props) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [occasion, setOccasion] = useState('');
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(null);
     const [dateVisible, setDateVisible] = useState(false);
     const [isEnabled, setEnabled] = useState(false);
 
