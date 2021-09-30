@@ -81,6 +81,14 @@ export async function createLocalContact(data) {
     return result;
 }
 
-export async function updateLocalContent() {
+export async function updateLocalContact() {
     
+}
+
+export async function deleteLocalContact() {
+    
+}
+
+export async function getFavorites(recipient) {
+
 }

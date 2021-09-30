@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Pressable } from 'reac
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import SwipeCards from 'react-native-swipe-cards-deck';
+import LottieView from 'lottie-react-native';
 import Avatar from './components/avatar';
 import Global from '../utils/global';
 import Header from './components/header';
@@ -104,7 +105,11 @@ const Product = (props) => {
     }
 
     const addToFavorite = item => {
+        if(userId == null) {
 
+        } else {
+            
+        }
     }
 
     if(!isLoaded)
@@ -116,6 +121,12 @@ const Product = (props) => {
 
     const renderNoCardItem = () => (
         <View>
+            <LottieView
+                source={Global.ANIMATION.TEAR}
+                style={{ width: 200, height: 200 }}
+                autoPlay
+                loop
+            />
             <Text style={styles.noText}>No more gifts ...</Text>
         </View>
     );
@@ -139,7 +150,7 @@ const Product = (props) => {
                     stack={true}
                     stackOffsetX={0}
                     cardRemoved={() => {}}
-                    loop={true}
+                    loop={false}
                 />
             </View>
             <View style={styles.footer}>
@@ -212,6 +223,8 @@ const styles = StyleSheet.create({
     noText: {
         fontFamily: 'AvenirBlack',
         fontSize: 22,
+        textAlign: 'center',
+        marginTop: 10,
     },
     footer: {
         flex: 1,

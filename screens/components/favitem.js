@@ -5,7 +5,7 @@ import Global from '../../utils/global';
 const FavItem = (props) => {
 
     return (
-        <View key={props.key} style={styles.container}>
+        <View key={props.diffKey} style={styles.container}>
             <Pressable style={styles.item}>
                 <View style={{ flex: 6 }}>
                     <Text style={styles.priceText}>{(props.data.currency == '0' ? '£' : '$') + props.data.price}</Text>

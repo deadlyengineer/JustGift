@@ -6,7 +6,7 @@ import { getOccasionFromDate } from '../../utils/helper';
 const ContactItem = (props) => {
 
     return (
-        <View key={props.key} style={styles.container}>
+        <View key={props.diffKey} style={styles.container}>
             <Pressable style={styles.item} onPress={props.onClickItem}>
                 <Image source={props.data.avatar == null ? Global.IMAGE.UNKNOWN : { uri: props.data.avatar }} style={styles.avatar}/>
                 <View style={styles.infoContainer}>
