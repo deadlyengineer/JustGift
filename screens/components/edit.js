@@ -8,7 +8,7 @@ import Avatar from './avatar';
 import Global from '../../utils/global';
 import { useSelector } from 'react-redux';
 import { getStringFromDate } from '../../utils/helper';
-import { updateLocalContact, updateLocalContent } from '../../utils/db';
+import { updateLocalContact, deleteLocalContact } from '../../utils/db';
 import { uploadImage } from '../../firebase/crud';
 
 const EditDlg = (props) => {
@@ -89,7 +89,7 @@ const EditDlg = (props) => {
                     Alert.alert('Failed to update the event');
             }).catch(err => console.log(err));
         } else {
-            
+
         }
     }
 
@@ -104,7 +104,12 @@ const EditDlg = (props) => {
                 text: 'Yes',
                 onPress: () => {
                     if(userId == null) {
-                        
+                        deleteLocalContact(props.data).then(result => {
+                            if(result)
+                                props.onChangeVisible(false);
+                            else
+                                Alert.alert('Failed to delete the event');
+                        }).catch(err => console.log(err));
                     } else {
                         
                     }
