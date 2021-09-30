@@ -7,7 +7,7 @@ import FavItem from './components/favitem';
 import Global from '../utils/global';
 import { useSelector } from 'react-redux';
 import { getLocalContacts } from '../utils/db';
-import { getFavoriteProducts } from '../firebase/crud';
+import { getProducts } from '../firebase/crud';
 import Loading from './loading';
 import PickerDlg from './components/picker';
 
@@ -16,9 +16,11 @@ const FavList = (props) => {
     const userId = useSelector(state => state.user.userId);
     const recipient = useSelector(state => state.user.recipient);
     const [data, setData] = useState([]);
+    const [productData, setProductData] = useState([]);
     const [contactData, setContactData] = useState([]);
     const [pickerVisible, setPickerVisible] = useState(false);
     const [isLoaded, setLoaded] = useState(false);
+    const [isFirstLoaded, setFirstLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isEmpty, setEmpty] = useState(false);
 
@@ -41,6 +43,13 @@ const FavList = (props) => {
     }, []);
 
     useEffect(() => {
+        getProducts({ price: 0, age: 9, gender: 2 }).then(result => {
+            setProductData(result);
+            setFirstLoaded(true);
+        }).catch(err => console.log(err));
+    }, []);
+
+    useEffect(() => {
         if(data.length < 1 && isLoaded)
             setEmpty(true);
         else
@@ -48,24 +57,27 @@ const FavList = (props) => {
     }, [data]);
 
     useEffect(() => {
-        if(isLoaded) {
+        if(isLoaded && isFirstLoaded) {
             setLoading(true);
             const idx = contactData.findIndex(element => element.first_name == recipient.first_name && element.last_name == recipient.last_name);
-            if(idx > -1)
-                getFavoriteProducts(contactData[idx].favorites).then(result => {
-                    if(result != null) {
-                        setData(result);
-                        setLoading(false);
-                    }
-                }).catch(err => console.log(err));
+            if(idx > -1) {
+                let items = [];
+                contactData[idx].favorites.forEach(item => {
+                    const pos = productData.findIndex(element => element.docId == item);
+                    if(pos > -1)
+                        items.push(productData[pos]);
+                });
+                setData(items);
+            }
+            setLoading(false);
         }
-    }, [recipient, isLoaded]);
+    }, [recipient, isLoaded, isFirstLoaded]);
 
     const pressItemAction = item => {
         props.navigation.navigate('Favorite', item);
     }
 
-    if(!isLoaded)
+    if(!isLoaded || !isFirstLoaded)
         return (<Loading/>);
 
     return (

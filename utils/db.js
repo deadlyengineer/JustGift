@@ -152,6 +152,29 @@ export async function addLocalFavorite(recipient, target) {
     return result;
 }
 
-export async function getLocalFavorites(recipient) {
-    
+export async function deleteLocalFavorite(recipient, target) {
+    const result = FileSystem.readAsStringAsync(fileDir).then(res => {
+        let contacts = JSON.parse(res);
+        const idx = contacts.data.findIndex(element => element.first_name == recipient.first_name && element.last_name == recipient.last_name);
+        if(idx > -1) {
+            const pos = contacts.data[idx].favorites.findIndex(element => element == target);
+            if(pos > -1) {
+                contacts.data[idx].favorites.splice(pos, 1);
+                const writeResult = FileSystem.writeAsStringAsync(fileDir, JSON.stringify(contacts)).then(() => {
+                    //console.log('write success');
+                    return true;
+                }).catch(err => {
+                    console.log(err);
+                    return false;
+                });
+
+                return writeResult;
+            }
+        }
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
 }

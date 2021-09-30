@@ -8,7 +8,7 @@ import GiftCard from './components/giftcard';
 import Header from './components/header';
 import Avatar from './components/avatar';
 import DetailDlg from './components/detail';
-
+import DeleteDlg from './components/delete';
 
 const Favorite = (props) => {
 
@@ -65,6 +65,12 @@ const Favorite = (props) => {
                 visible={detailVisible}
                 onChangeVisible={setDetailVisible}
                 data={itemDetail}
+            />
+            <DeleteDlg
+                visible={delVisible}
+                onChangeVisible={setDelVisible}
+                navigation={props.navigation}
+                item={props.navigation.state.params.docId}
             />
         </View>
     );
