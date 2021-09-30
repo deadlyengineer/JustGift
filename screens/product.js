@@ -112,6 +112,15 @@ const Product = (props) => {
         }
     }
 
+    const pressRefreshAction = () => {
+        const option = {
+            price: filterOption.price,
+            age: filterOption.age,
+            gender: filterOption.gender,
+        };
+        setFilterOption(option);
+    }
+
     if(!isLoaded)
         return (<Loading/>);
 
@@ -128,6 +137,9 @@ const Product = (props) => {
                 loop
             />
             <Text style={styles.noText}>No more gifts ...</Text>
+            <TouchableOpacity style={styles.reloadBtn} onPress={pressRefreshAction}>
+                <Image source={Global.IMAGE.RELOAD} style={{ width: 50, height: 50 }}/>
+            </TouchableOpacity>
         </View>
     );
     
@@ -282,6 +294,10 @@ const styles = StyleSheet.create({
         width: Global.SIZE.W_55,
         height: Global.SIZE.W_55,
         borderRadius: Global.SIZE.W_55 / 2,
+    },
+    reloadBtn: {
+        marginTop: 60,
+        alignSelf: 'center',
     },
 });
 

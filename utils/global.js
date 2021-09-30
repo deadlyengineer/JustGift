@@ -68,6 +68,7 @@ export default {
         UNKNOWN: require('../assets/unknown.png'),
         LEFT: require('../assets/left.png'),
         RIGHT: require('../assets/right.png'),
+        RELOAD: require('../assets/reload.png'),
     },
     FONT: {
         AVENIR_HEAVY: require('../assets/fonts/Avenir_heavy.ttf'),

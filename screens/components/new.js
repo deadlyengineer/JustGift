@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
         width: Global.SIZE.W_170 - 45,
         height: Global.SIZE.W_170 - 45,
         borderRadius: (Global.SIZE.W_170 - 45) / 2,
-        resizeMode: 'contain',
+        //resizeMode: 'contain',
     },
     inputContainer: {
         flex: 1,

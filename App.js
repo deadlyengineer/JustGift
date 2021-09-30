@@ -28,6 +28,7 @@ export default function App() {
     Global.IMAGE.UNKNOWN,
     Global.IMAGE.LEFT,
     Global.IMAGE.RIGHT,
+    Global.IMAGE.RELOAD,
   ]);
 
   if(!fontsLoaded || !imagesLoaded)

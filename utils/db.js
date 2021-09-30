@@ -135,5 +135,5 @@ export async function deleteLocalContact(target) {
 }
 
 export async function getFavorites(recipient) {
-
+    
 }
