@@ -10,7 +10,7 @@ import Header from './components/header';
 import Loading from './loading';
 import GiftCard from './components/giftcard';
 import { getProducts } from '../firebase/crud';
-import { getLocalContacts } from '../utils/db';
+import { addLocalFavorite, getLocalContacts } from '../utils/db';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeRecipient } from '../store/actions/actions';
 import FilterDlg from './components/filter';
@@ -37,7 +37,11 @@ const Product = (props) => {
 
     useLayoutEffect(() => {
         const listener = props.navigation.addListener('didFocus', () => {
-            updateContactData();
+            if(userId == null) {
+                updateContactData();
+            } else {
+                
+            }
         });
         
         return () => listener.remove();
@@ -105,8 +109,15 @@ const Product = (props) => {
     }
 
     const addToFavorite = item => {
+        //console.log(item.docId);
         if(userId == null) {
-
+            addLocalFavorite(recipient, item.docId).then(result => {
+                if(result) {
+                    let target = recipient;
+                    target.favorites.push(item.docId);
+                    dispatch(changeRecipient(target));
+                }
+            }).catch(err => console.log(err));
         } else {
             
         }

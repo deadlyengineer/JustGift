@@ -40,6 +40,24 @@ export async function getProducts(filterOption) {
     return result;
 }
 
+export async function getFavoriteProducts(itemList) {
+    const result = db.collection('products').get().then(res => {
+        let products = [];
+        res.forEach(doc => {
+            const docData = doc.data();
+            if(itemList.includes(doc.id))
+                products.push({ ...docData, docId: doc.id });
+        });
+        //console.log(products);
+        return products;
+    }).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
+
 export async function uploadImage(avatar, userId) {
     const response = await fetch(avatar);
     const blob = await response.blob();

@@ -6,26 +6,60 @@ import Header from './components/header';
 import FavItem from './components/favitem';
 import Global from '../utils/global';
 import { useSelector } from 'react-redux';
+import { getLocalContacts } from '../utils/db';
+import { getFavoriteProducts } from '../firebase/crud';
 import Loading from './loading';
+import PickerDlg from './components/picker';
 
 const FavList = (props) => {
 
+    const userId = useSelector(state => state.user.userId);
     const recipient = useSelector(state => state.user.recipient);
     const [data, setData] = useState([]);
+    const [contactData, setContactData] = useState([]);
     const [pickerVisible, setPickerVisible] = useState(false);
-    const [isLoaded, setLoaded] = useState(true);
+    const [isLoaded, setLoaded] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [isEmpty, setEmpty] = useState(false);
 
     useLayoutEffect(() => {
         const listener = props.navigation.addListener('didFocus', () => {
-            
+            setLoaded(false);
+            if(userId == null) {
+                getLocalContacts().then(result => {
+                    if(result != null) {
+                        setContactData(result);
+                        setLoaded(true);
+                    }
+                }).catch(err => console.log(err));
+            } else {
+
+            }
         });
+
+        return () => listener.remove();
     }, []);
 
     useEffect(() => {
-        if(data.length < 1)
+        if(data.length < 1 && isLoaded)
             setEmpty(true);
+        else
+            setEmpty(false);
     }, [data]);
+
+    useEffect(() => {
+        if(isLoaded) {
+            setLoading(true);
+            const idx = contactData.findIndex(element => element.first_name == recipient.first_name && element.last_name == recipient.last_name);
+            if(idx > -1)
+                getFavoriteProducts(contactData[idx].favorites).then(result => {
+                    if(result != null) {
+                        setData(result);
+                        setLoading(false);
+                    }
+                }).catch(err => console.log(err));
+        }
+    }, [recipient, isLoaded]);
 
     if(!isLoaded)
         return (<Loading/>);
@@ -50,12 +84,19 @@ const FavList = (props) => {
                         </View>
                     :   <FlatList
                             data={data}
-                            renderItem={item => <FavItem diffKey={item.docId} data={item}/>}
+                            renderItem={({item}) => <FavItem diffKey={item.docId} data={item}/>}
                             keyExtractor={item => item.docId}
+                            refreshing={loading}
+                            onRefresh={() => {}}
                             ItemSeparatorComponent={null}
                         />
                 }
             </View>
+            <PickerDlg
+                visible={pickerVisible}
+                onChangeVisible={setPickerVisible}
+                data={contactData}
+            />
         </View>
     );
 }

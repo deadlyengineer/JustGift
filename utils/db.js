@@ -36,17 +36,6 @@ export async function getLocalContacts() {
     return result;
 }
 
-export async function getLocalFavorites() {
-    getLocalContacts().then(res => {
-        let items = [];
-        if(res !== null && res.length > 0) {
-            
-        }
-    }).catch(err => {
-        console.log(err);
-    });
-}
-
 export async function createLocalContact(data) {
     const result = FileSystem.readAsStringAsync(fileDir).then(res => {
         if(!res) {
@@ -134,6 +123,35 @@ export async function deleteLocalContact(target) {
     return result;
 }
 
-export async function getFavorites(recipient) {
+export async function addLocalFavorite(recipient, target) {
+    const result = FileSystem.readAsStringAsync(fileDir).then(res => {
+        let contacts = JSON.parse(res);
+        const idx = contacts.data.findIndex(element => element.first_name == recipient.first_name && element.last_name == recipient.last_name);
+        if(idx > -1) {
+            if(!contacts.data[idx].favorites.includes(target)) {
+                contacts.data[idx].favorites.push(target);
+                const writeResult = FileSystem.writeAsStringAsync(fileDir, JSON.stringify(contacts)).then(() => {
+                    //console.log('write success');
+                    return true;
+                }).catch(err => {
+                    console.log(err);
+                    return false;
+                });
+
+                return writeResult;
+            } else {
+                console.log('already exist');
+                return false;
+            }
+        }
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
+
+export async function getLocalFavorites(recipient) {
     
 }
