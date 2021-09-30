@@ -68,7 +68,7 @@ const PickerDlg = (props) => {
                         style={styles.picker}
                         selectedValue={getCurrentRecipient(recipient)}
                         pickerData={getRecipientList(props.data)}
-                        onValueChange={value => {console.log(value)}}
+                        onValueChange={() => {}}
                     />
                 </View>
             </View>
