@@ -15,11 +15,11 @@ const EditDlg = (props) => {
 
     const userId = useSelector(state => state.user.userId);
 
-    const [avatar, setAvatar] = useState(props.data.avatar);
-    const [firstName, setFirstName] = useState(props.data.firstName);
-    const [lastName, setLastName] = useState(props.data.lastName);
-    const [occasion, setOccasion] = useState(props.data.occasion);
-    const [date, setDate] = useState(props.data.date);
+    const [avatar, setAvatar] = useState(Global.IMAGE.UNKNOWN.uri);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [occasion, setOccasion] = useState('');
+    const [date, setDate] = useState(null);
     const [dateVisible, setDateVisible] = useState(false);
     const [isEnabled, setEnabled] = useState(false);
 
@@ -29,6 +29,14 @@ const EditDlg = (props) => {
         else
             setEnabled(false);
     }, [firstName, lastName, occasion, date]);
+
+    const initStates = () => {
+        setAvatar(props.data.avatar);
+        setFirstName(props.data.first_name);
+        setLastName(props.data.last_name);
+        setOccasion(props.data.occasion);
+        setDate(new Date(props.data.date));
+    }
 
     const compressImage = async(uri) => {
         const manipResult = await ImageManipulator.manipulateAsync(
@@ -98,7 +106,7 @@ const EditDlg = (props) => {
             animationType='slide'
             visible={props.visible}
             transparent
-            onShow={() => {}}
+            onShow={initStates}
         >
             <View style={styles.overlay}>
                 <View style={styles.avatarContainer}>
