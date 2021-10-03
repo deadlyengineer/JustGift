@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Keyboard } from 'react-native';
+import { createUserWithEmailAndPassword } from '../firebase/auth';
 import Global from '../utils/global';
 import SvgIcon from '../utils/svg';
 
@@ -25,7 +26,31 @@ const SignUp = (props) => {
     }
 
     const pressRegisterAction = () => {
-        
+        if(pwd == '' || email == '') {
+            Alert.alert("Email or password can't be empty");
+            return;
+        }
+        if(pwd != repwd) {
+            Alert.alert("Passwords don't match");
+            return;
+        }
+
+        createUserWithEmailAndPassword(email, pwd).then(result => {
+            if(result.status == 'success') {
+                Alert.alert('User account is created successfully');
+                migrateDB(result.uid).then(res => {
+                    if(res)
+                        props.navigation.navigate('Main');
+                }).catch(err => console.log(err));
+            } else {
+                if(result.reason == 'fail-already')
+                    Alert.alert('The email address is already in use');
+                else if(result.reason == 'fail-invalid')
+                    Alert.alert('The email address is invalid');
+                else
+                    Alert.alert('Failed to sign up');
+            }
+        }).catch(err => console.log(err));
     }
 
     return (

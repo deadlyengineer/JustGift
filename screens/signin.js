@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Keyboard } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import { firebase } from '../firebase/config';
+import { signInWithEmailAndPassword } from '../firebase/auth';
+import { formatDB } from '../utils/db';
 import Global from '../utils/global';
 import SvgIcon from '../utils/svg';
 
@@ -22,7 +22,26 @@ const SignIn = (props) => {
     }, []);
 
     const pressLogInAction = () => {
+        if(email == '' || pwd == '') {
+            Alert.alert("Email or password can't be empty");
+            return;
+        }
 
+        signInWithEmailAndPassword(email, pwd).then(result => {
+            if(result == 'success') {
+                formatDB();
+                props.navigation.navigate('Main');
+            } else {
+                if(result == 'fail-user')
+                    Alert.alert('There is no such user');
+                else if(result == 'fail-email')
+                    Alert.alert('The email address is invalid');
+                else if(result == 'fail-password')
+                    Alert.alert('The password is not correct');
+                else
+                    Alert.alert('Failed to sign in');
+            }
+        }).catch(err => console.log(err));
     }
 
     const pressRegisterAction = () => {

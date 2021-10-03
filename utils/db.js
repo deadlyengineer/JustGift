@@ -19,6 +19,18 @@ export async function initDB() {
     }
 }
 
+export async function formatDB() {
+    const result = FileSystem.writeAsStringAsync(fileDir, '').then(() => {
+        //console.log('DB format success');
+        return true;
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
+
 export async function getLocalContacts() {
     const result = FileSystem.readAsStringAsync(fileDir).then(res => {
         if(!res) {
