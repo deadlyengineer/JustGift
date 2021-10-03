@@ -140,7 +140,7 @@ export async function addLocalFavorite(recipient, target) {
 
                 return writeResult;
             } else {
-                console.log('already exist');
+                //console.log('already exist');
                 return false;
             }
         }

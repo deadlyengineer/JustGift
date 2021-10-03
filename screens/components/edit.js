@@ -14,6 +14,7 @@ import { uploadImage } from '../../firebase/crud';
 const EditDlg = (props) => {
 
     const userId = useSelector(state => state.user.userId);
+    const recipient = useSelector(state => state.user.recipient);
 
     const [avatar, setAvatar] = useState(Global.IMAGE.UNKNOWN.uri);
     const [firstName, setFirstName] = useState('');
@@ -103,6 +104,10 @@ const EditDlg = (props) => {
             {
                 text: 'Yes',
                 onPress: () => {
+                    if(props.data.first_name == recipient.first_name && props.data.last_name == recipient.last_name) {
+                        Alert.alert('This user is in selection now');
+                        return;
+                    }
                     if(userId == null) {
                         deleteLocalContact(props.data).then(result => {
                             if(result)

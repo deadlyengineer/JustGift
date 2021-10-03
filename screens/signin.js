@@ -26,7 +26,7 @@ const SignIn = (props) => {
     }
 
     const pressRegisterAction = () => {
-        
+        props.navigation.navigate('SignUp');
     }
 
     return (
