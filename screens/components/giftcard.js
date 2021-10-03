@@ -1,19 +1,60 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Icon } from 'react-native-elements';
 import Pagination from 'react-native-dots-pagination';
 import { Video } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 import Global from '../../utils/global';
 
 const GiftCard = (props) => {
 
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(-1);
     const [movStatus, setMovStatus] = useState(false);
     const [isMovLoaded, setMovLoaded] = useState(false);
+    const [imgFirst, setImageFirst] = useState(null);
+    const [imgSecond, setImageSecond] = useState(null);
     const videoPlayer = useRef(null);
+    const imgUri_1 = FileSystem.cacheDirectory + props.data.docId + '1';
+    const imgUri_2 = FileSystem.cacheDirectory + props.data.docId + '2';
+
+    useEffect(() => {
+        FileSystem.getInfoAsync(imgUri_1).then(metadata_1 => {
+            if(metadata_1.exists) {
+                setImageFirst(imgUri_1);
+                FileSystem.getInfoAsync(imgUri_2).then(metadata_2 => {
+                    if(metadata_2.exists) {
+                        setImageSecond(imgUri_2);
+                        setActiveIndex(0);
+                    } else {
+                        FileSystem.downloadAsync(props.data.img_2, imgUri_2).then(({ uri }) => {
+                            setImageSecond(uri);
+                            setActiveIndex(0);
+                        }).catch(err => console.log(err));
+                    }
+                }).catch(err => console.log(err));
+            } else {
+                FileSystem.downloadAsync(props.data.img_1, imgUri_1).then(({ uri }) => {
+                    setImageFirst(uri);
+                    FileSystem.getInfoAsync(imgUri_2).then(metadata_2 => {
+                        if(metadata_2.exists) {
+                            setImageSecond(imgUri_2);
+                            setActiveIndex(0);
+                        } else {
+                            FileSystem.downloadAsync(props.data.img_2, imgUri_2).then(({ uri }) => {
+                                setImageSecond(uri);
+                                setActiveIndex(0);
+                            }).catch(err => console.log(err));
+                        }
+                    }).catch(err => console.log(err));
+                }).catch(err => console.log(err));
+            }
+        }).catch(err => console.log(err));
+    }, []);
 
     const pressCardImage = () => {
+        if(activeIndex == 2)
+            setMovLoaded(false);
         setActiveIndex(activeIndex => (activeIndex + 1) % 3);
     }
 
@@ -27,10 +68,19 @@ const GiftCard = (props) => {
                 <View style={styles.body}>
                     <Pressable style={styles.imgContainer} onPress={pressCardImage}>
                         {
-                            activeIndex == 0 ?
-                                <Image source={{ uri: props.data.img_1 }} style={styles.productImg}/>
+                            activeIndex == -1 ?
+                                <View style={styles.loadingContainer}>
+                                    <LottieView
+                                        source={Global.ANIMATION.WAITING}
+                                        style={{ width: 200, height: 200 }}
+                                        autoPlay
+                                        loop
+                                    />
+                                </View>
+                            : activeIndex == 0 ?
+                                <Image source={{ uri: imgFirst }} style={styles.productImg}/>
                             : activeIndex == 1 ?
-                                <Image source={{ uri: props.data.img_2 }} style={styles.productImg}/>
+                                <Image source={{ uri: imgSecond }} style={styles.productImg}/>
                             :   <View style={styles.movContainer}>
                                     <Video
                                         ref={videoPlayer}
@@ -115,6 +165,12 @@ const styles = StyleSheet.create({
         height: Global.SIZE.W_433,
     },
     imgContainer: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingContainer: {
         width: '100%',
         height: '100%',
         justifyContent: 'center',
