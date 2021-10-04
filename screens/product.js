@@ -37,11 +37,7 @@ const Product = (props) => {
 
     useLayoutEffect(() => {
         const listener = props.navigation.addListener('didFocus', () => {
-            if(userId == null) {
-                updateContactData();
-            } else {
-                
-            }
+            updateContactData();
         });
         
         return () => listener.remove();
@@ -74,7 +70,7 @@ const Product = (props) => {
                 }
             }).catch(err => console.log(err));
         } else {
-
+            
         }
     }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Keyboard } from 'react-native';
-import { createUserWithEmailAndPassword } from '../firebase/auth';
+import { firebase } from '../firebase/config';
 import Global from '../utils/global';
 import SvgIcon from '../utils/svg';
 
@@ -21,8 +21,8 @@ const SignUp = (props) => {
         }
     }, []);
 
-    const pressLogInAction = () => {
-        props.navigation.navigate('SignIn');
+    const migrateDB = (userId) => {
+        
     }
 
     const pressRegisterAction = () => {
@@ -35,22 +35,21 @@ const SignUp = (props) => {
             return;
         }
 
-        createUserWithEmailAndPassword(email, pwd).then(result => {
-            if(result.status == 'success') {
-                Alert.alert('User account is created successfully');
-                migrateDB(result.uid).then(res => {
-                    if(res)
-                        props.navigation.navigate('Main');
-                }).catch(err => console.log(err));
-            } else {
-                if(result.reason == 'fail-already')
-                    Alert.alert('The email address is already in use');
-                else if(result.reason == 'fail-invalid')
-                    Alert.alert('The email address is invalid');
-                else
-                    Alert.alert('Failed to sign up');
-            }
-        }).catch(err => console.log(err));
+        firebase.auth().createUserWithEmailAndPassword(email, pwd).then(res => {
+            Alert.alert('User account is created successfully.');
+            //console.log(res.user.uid);
+            migrateDB(res.user.uid);
+            props.navigation.navigate('Main');
+        }).catch(err => {
+            if(err.code == 'auth/email-already-in-use')
+                Alert.alert('The email address is already in use.');
+            if(err.code == 'auth/invalid-email')
+                Alert.alert('The email address is invalid.');
+        });
+    }
+
+    const pressLogInAction = () => {
+        props.navigation.navigate('SignIn');
     }
 
     return (

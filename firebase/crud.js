@@ -76,3 +76,15 @@ export async function uploadImage(avatar, userId) {
     
     return result;
 }
+
+export async function getContacts(userId) {
+    db.collection('users').where('id', '==', userId).get().then(res => {
+        let contacts = [];
+        res.forEach(doc => {
+            
+        });
+    }).catch(err => {
+        console.log(err);
+        return null;
+    });
+}

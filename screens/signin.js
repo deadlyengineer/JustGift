@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Keyboard } from 'react-native';
-import { signInWithEmailAndPassword } from '../firebase/auth';
+import { firebase } from '../firebase/config';
 import { formatDB } from '../utils/db';
 import Global from '../utils/global';
 import SvgIcon from '../utils/svg';
@@ -27,21 +27,22 @@ const SignIn = (props) => {
             return;
         }
 
-        signInWithEmailAndPassword(email, pwd).then(result => {
-            if(result == 'success') {
-                formatDB();
-                props.navigation.navigate('Main');
-            } else {
-                if(result == 'fail-user')
-                    Alert.alert('There is no such user');
-                else if(result == 'fail-email')
-                    Alert.alert('The email address is invalid');
-                else if(result == 'fail-password')
-                    Alert.alert('The password is not correct');
+        firebase.auth().signInWithEmailAndPassword(email, pwd).then(() => {
+            //console.log('Sign-in success');
+            formatDB().then(result => {
+                if(result)
+                    props.navigation.navigate('Main');
                 else
                     Alert.alert('Failed to sign in');
-            }
-        }).catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        }).catch(err => {
+            if(err.code == 'auth/user-not-found')
+                Alert.alert('There is no such user.');
+            if(err.code == 'auth/invalid-email')
+                Alert.alert('The email address is invalid.');
+            if(err.code == 'auth/wrong-password')
+                Alert.alert('The passoword is not correct.')
+        });
     }
 
     const pressRegisterAction = () => {
