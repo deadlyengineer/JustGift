@@ -103,3 +103,32 @@ export async function createContact(data) {
 
     return result;
 }
+
+export async function deleteContact(docId) {
+    const result = db.collection('contacts').doc(docId).delete().then(() => {
+        console.log('contact delete success');
+        return true;
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
+
+export async function updateContact(originId, target) {
+    const result = db.collection('contacts').doc(originId).update({
+        first_name: target.first_name,
+        last_name: target.last_name,
+        occasion: target.occasion,
+        date: target.date,
+    }).then(() => {
+        //console.log('contact update success');
+        return true;
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}

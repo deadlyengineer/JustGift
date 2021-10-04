@@ -9,7 +9,7 @@ import Global from '../../utils/global';
 import { useSelector } from 'react-redux';
 import { getStringFromDate } from '../../utils/helper';
 import { updateLocalContact, deleteLocalContact } from '../../utils/db';
-import { uploadImage } from '../../firebase/crud';
+import { deleteContact, updateContact, uploadImage } from '../../firebase/crud';
 
 const EditDlg = (props) => {
 
@@ -90,7 +90,41 @@ const EditDlg = (props) => {
                     Alert.alert('Failed to update the event');
             }).catch(err => console.log(err));
         } else {
-
+            if(avatar != props.data.avatar) {
+                uploadImage(avatar, userId).then(fileUrl => {
+                    if(fileUrl == null)
+                        Alert.alert('Failed to upload your photo');
+                    else {
+                        const data = {
+                            avatar: fileUrl,
+                            first_name: firstName,
+                            last_name: lastName,
+                            occasion: occasion,
+                            date: date.toString(),
+                        };
+                        updateContact(props.data.docId, data).then(result => {
+                            if(result)
+                                props.onChangeVisible(false);
+                            else
+                                Alert.alert('Failed to update the event');
+                        }).catch(err => console.log(err));
+                    }
+                }).catch(err => console.log(err));
+            } else {
+                const data = {
+                    avatar: avatar,
+                    first_name: firstName,
+                    last_name: lastName,
+                    occasion: occasion,
+                    date: date.toString(),
+                };
+                updateContact(props.data.docId, data).then(result => {
+                    if(result)
+                        props.onChangeVisible(false);
+                    else
+                        Alert.alert('Failed to update the event');
+                }).catch(err => console.log(err));
+            }
         }
     }
 
@@ -116,7 +150,12 @@ const EditDlg = (props) => {
                                 Alert.alert('Failed to delete the event');
                         }).catch(err => console.log(err));
                     } else {
-                        
+                        deleteContact(props.data.docId).then(result => {
+                            if(result)
+                                props.onChangeVisible(false);
+                            else
+                                Alert.alert('Failed to delete the event');
+                        }).catch(err => console.log(err));
                     }
                 }
             }
