@@ -78,13 +78,28 @@ export async function uploadImage(avatar, userId) {
 }
 
 export async function getContacts(userId) {
-    db.collection('users').where('id', '==', userId).get().then(res => {
+    const result = db.collection('contacts').where('user_id', '==', userId).get().then(res => {
         let contacts = [];
         res.forEach(doc => {
-            
+            contacts.push(doc.data());
         });
+        return contacts;
     }).catch(err => {
         console.log(err);
         return null;
     });
+
+    return result;
+}
+
+export async function createContact(data) {
+    const result = db.collection('contacts').doc().set(data).then(() => {
+        //console.log('contact write success');
+        return true;
+    }).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
 }

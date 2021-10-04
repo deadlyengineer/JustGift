@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, Keyboard } from 'react-native';
 import { firebase } from '../firebase/config';
+import { getLocalContacts } from '../utils/db';
+import { createContact, uploadImage } from '../firebase/crud';
 import Global from '../utils/global';
 import SvgIcon from '../utils/svg';
 
@@ -22,7 +24,25 @@ const SignUp = (props) => {
     }, []);
 
     const migrateDB = (userId) => {
-        
+        getLocalContacts().then(contacts => {
+            contacts.forEach(contact => {
+                if(contact.avatar == null) {
+                    const data = {
+                        ...contact,
+                        user_id: userId,
+                    };
+                    createContact(data);
+                } else {
+                    uploadImage(contact.avatar, userId).then(fileUrl => {
+                        const data = {
+                            ...contact,
+                            avatar: fileUrl,
+                            user_id: userId,
+                        }
+                    }).catch(err => console.log(err));
+                }
+            });
+        }).catch(err => console.log(err));
     }
 
     const pressRegisterAction = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Pressable } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,7 +9,7 @@ import Global from '../utils/global';
 import Header from './components/header';
 import Loading from './loading';
 import GiftCard from './components/giftcard';
-import { getProducts } from '../firebase/crud';
+import { getProducts, getContacts } from '../firebase/crud';
 import { addLocalFavorite, getLocalContacts } from '../utils/db';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeRecipient } from '../store/actions/actions';
@@ -35,7 +35,7 @@ const Product = (props) => {
     const [filterOption, setFilterOption] = useState({ price: 0, age: 9, gender: 2 });
     const tinderCards = useRef(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const listener = props.navigation.addListener('didFocus', () => {
             updateContactData();
         });
@@ -70,7 +70,18 @@ const Product = (props) => {
                 }
             }).catch(err => console.log(err));
         } else {
-            
+            getContacts(userId).then(result => {
+                console.log(result);
+                if(result != null) {
+                    if(result.length < 1)
+                        setContactVisible(true);
+                    else {
+                        setContactData(result);
+                        if(flag)
+                            dispatch(changeRecipient(result[0]));
+                    }
+                }
+            }).catch(err => console.log(err));
         }
     }
 

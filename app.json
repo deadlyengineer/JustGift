@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.hypertapp.justgift",
-      "buildNumber": "1.0.4",
+      "buildNumber": "1.0.5",
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "App uses your location permission to get where you are now.",

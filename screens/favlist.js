@@ -7,7 +7,7 @@ import FavItem from './components/favitem';
 import Global from '../utils/global';
 import { useSelector } from 'react-redux';
 import { getLocalContacts } from '../utils/db';
-import { getProducts } from '../firebase/crud';
+import { getProducts, getContacts } from '../firebase/crud';
 import Loading from './loading';
 import PickerDlg from './components/picker';
 
@@ -35,7 +35,7 @@ const FavList = (props) => {
                     }
                 }).catch(err => console.log(err));
             } else {
-
+                
             }
         });
 

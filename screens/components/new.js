@@ -8,7 +8,7 @@ import Global from '../../utils/global';
 import { useSelector } from 'react-redux';
 import { getStringFromDate } from '../../utils/helper';
 import { createLocalContact } from '../../utils/db';
-import { uploadImage } from '../../firebase/crud';
+import { createContact, uploadImage } from '../../firebase/crud';
 
 const NewDlg = (props) => {
 
@@ -94,7 +94,46 @@ const NewDlg = (props) => {
                 console.log(err);
             })
         } else {
-            
+            if(avatar == null) {
+                const data = {
+                    first_name: firstName,
+                    last_name: lastName,
+                    occasion: occasion,
+                    date: date.toString(),
+                    favorites: [],
+                    user_id: userId,
+                    avatar: null,
+                };
+                createContact(data).then(result => {
+                    if(result) {
+                        initStates();
+                        props.onChangeVisible(false);
+                    }
+                }).catch(err => console.log(err));
+            } else {
+                uploadImage(avatar, userId).then(fileUrl => {
+                    const data = {
+                        first_name: firstName,
+                        last_name: lastName,
+                        occasion: occasion,
+                        date: date.toString(),
+                        favorites: [],
+                        user_id: userId,
+                        avatar: fileUrl,
+                    };
+                    createContact(data).then(result => {
+                        if(result) {
+                            initStates();
+                            props.onChangeVisible(false);
+                        }
+                    }).catch(err => console.log(err));
+                }).catch(err => {
+                    console.log(err);
+                    Alert.alert('Failed to upload your photo');
+                    setAvatar(null);
+                    return;
+                });
+            }
         }
     }
 
